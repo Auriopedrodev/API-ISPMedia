@@ -1,0 +1,17 @@
+﻿global using ISPMediaAPI.Context;
+global using ISPMediaAPI.DTOs.Utilizador;
+global using ISPMediaAPI.Models;
+global using Microsoft.EntityFrameworkCore;
+global using ISPMediaAPI.DTOs.ArtistaDTO;
+global using ISPMediaAPI.Services;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.Extensions.Options;
+global using System.Collections.Generic;
+global using System.ComponentModel.DataAnnotations;
+global using System.ComponentModel.DataAnnotations.Schema;
+global using ISPMediaAPI.Enums;
+global using Swashbuckle.AspNetCore.Annotations;
+global using ISPMediaAPI.DTOs.Artista;
+global using Mapster;
+global using ISPMediaAPI.DTOs.BandaDTO;
+global using ISPMediaAPI.DTOs.ArtistaDTO;

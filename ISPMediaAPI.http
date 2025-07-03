@@ -1,0 +1,6 @@
+@ISPMediaAPI_HostAddress = http://localhost:5299
+
+GET {{ISPMediaAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
