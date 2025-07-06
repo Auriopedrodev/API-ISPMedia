@@ -46,7 +46,7 @@ namespace ISPMediaAPI.Controllers
             Summary = "Criar um nova video",
             Description = "Regista um novo video na aplicação com os dados fornecidos."
         )]
-        public async Task<IActionResult> Criar([FromForm] VideoAddDTO dto, IFormFile media)
+        public async Task<IActionResult> Criar([FromForm] VideoAddFormDto dto, IFormFile media)
         {
             var novaVideo = await _videoService.CriarVideoAsync(dto, media);
             if (novaVideo == null)

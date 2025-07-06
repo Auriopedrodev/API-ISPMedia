@@ -1,6 +1,4 @@
-﻿using ISPMediaAPI.DTOs.Musica;
-
-namespace ISPMediaAPI.Controllers;
+﻿namespace ISPMediaAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

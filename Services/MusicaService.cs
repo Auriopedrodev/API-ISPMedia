@@ -266,14 +266,14 @@ public class MusicaService
             return false;
 
         if (!string.IsNullOrEmpty(musica.CaminhoMedia))
-        {
-            string fullPath = musica.CaminhoMedia.Replace('/', Path.DirectorySeparatorChar);
+{
+    string fullPath = musica.CaminhoMedia.Replace('/', Path.DirectorySeparatorChar);
 
-            if (File.Exists(fullPath))
-            {
-                File.Delete(fullPath);
-            }
-        }
+    if (File.Exists(fullPath))
+    {
+        File.Delete(fullPath);
+    }
+}
 
 
         _ispmediacontext.Musicas.Remove(musica);

@@ -1,5 +1,6 @@
 ﻿using ISPMediaAPI.DTOs.Musica;
 using ISPMediaAPI.DTOs.Video;
+using ISPMediaAPI.Models;
 
 namespace ISPMediaAPI.Services;
 
@@ -12,45 +13,27 @@ public class VideoService
         _ispmediacontext = ispmediacontext;
     }
 
-    public async Task<VideoAddDTO> CriarVideoAsync(VideoAddDTO dtovideo, IFormFile media)
+    public async Task<VideoAddDTO> CriarVideoAsync(VideoAddFormDto dtovideo, IFormFile media)
     {
         // ADICIONAR PRODUTORA 
-        var produtoraExistente = await _ispmediacontext.Produtoras.FirstOrDefaultAsync(p => p.Nome == dtovideo.Autor.Produtora.Nome);
+        var produtoraExistente = await _ispmediacontext.Produtoras.FirstOrDefaultAsync(p => p.Nome == dtovideo.ProdutatoraNome);
         var produtoraNova = produtoraExistente ??
-            (await _ispmediacontext.Produtoras.AddAsync(new Produtora { Nome = dtovideo.Autor.Produtora.Nome })).Entity;
+            (await _ispmediacontext.Produtoras.AddAsync(new Produtora { Nome = dtovideo.ProdutatoraNome })).Entity;
 
         // ADICIONAR BANDA
-        var bandaExistente = await _ispmediacontext.Bandas.FirstOrDefaultAsync(p => p.Nome == dtovideo.Autor.Banda.Nome);
+        var bandaExistente = await _ispmediacontext.Bandas.FirstOrDefaultAsync(p => p.Nome == dtovideo.BandaNome);
         var bandaNova = bandaExistente ??
-            (await _ispmediacontext.Bandas.AddAsync(new Banda { Nome = dtovideo.Autor.Banda.Nome })).Entity;
+            (await _ispmediacontext.Bandas.AddAsync(new Banda { Nome = dtovideo.BandaNome })).Entity;
 
         // ADICIONAR 
-        var autorExistente = await _ispmediacontext.Autores.FirstOrDefaultAsync(p => p.Nome == dtovideo.Autor.Nome);
+        var autorExistente = await _ispmediacontext.Autores.FirstOrDefaultAsync(p => p.Nome == dtovideo.AutorNome);
         var autorNovo = autorExistente ??
                         (await _ispmediacontext.Autores.AddAsync(new Autor
                         {
-                            Nome = dtovideo.Autor.Nome,
+                            Nome = dtovideo.AutorNome,
                             Produtora = produtoraNova,
                             Banda = bandaNova
                         })).Entity;
-
-        // ADICIONAR LISTA DE Participacoes
-        var listaParticipacoes = new List<Participacao>();
-
-        foreach (var participacao in dtovideo.Participacoes)
-        {
-            var participacaoExistente = await _ispmediacontext.Participacoes.FirstOrDefaultAsync(c => c.Nome == participacao.Nome);
-            if (participacaoExistente == null)
-            {
-                var participacaoNovo = (await _ispmediacontext.Participacoes.AddAsync(new Participacao { Nome = participacao.Nome })).Entity;
-                listaParticipacoes.Add(participacaoNovo);
-            }
-            else
-            {
-                listaParticipacoes.Add(participacaoExistente);
-            }
-
-        }
 
         // SALVAR MEDIA
         string caminhoCompleto = null;
@@ -75,34 +58,63 @@ public class VideoService
             Descricao = dtovideo.Descricao,
             CaminhoMedia = caminhoCompleto,
             Tamanho = media.Length,
-            TipoMedia = "video",
+            TipoMedia = "Video",
             Autor = autorNovo,
-            Participacoes = listaParticipacoes,
+            Participacoes = new List<Participacao>()
         };
+
+        // ADICIONAR PARTICIPAÇÕES (separadas por vírgula)
+        if (!string.IsNullOrEmpty(dtovideo.Participacoes))
+        {
+            var participacoesArray = dtovideo.Participacoes.Split(',', StringSplitOptions.RemoveEmptyEntries);
+            foreach (var participacaoNome in participacoesArray)
+            {
+                var nomeLimpo = participacaoNome.Trim();
+                if (!string.IsNullOrEmpty(nomeLimpo))
+                {
+                    var participacaoExistente = await _ispmediacontext.Participacoes.FirstOrDefaultAsync(c => c.Nome == nomeLimpo);
+                    if (participacaoExistente == null)
+                    {
+                        var participacaoNovo = (await _ispmediacontext.Participacoes.AddAsync(new Participacao { Nome = nomeLimpo })).Entity;
+                        novoVideo.Participacoes.Add(participacaoNovo);
+                    }
+                    else
+                    {
+                        novoVideo.Participacoes.Add(participacaoExistente);
+                    }
+                }
+            }
+        }
 
         _ispmediacontext.Videos.Add(novoVideo);
         await _ispmediacontext.SaveChangesAsync();
+
         var dto = novoVideo.Adapt<VideoAddDTO>();
         return dto;
-
     }
 
     
-    public async Task<List<Video>> ListarTodosVideosAsync()
+    public async Task<List<VideoGetDTO>> ListarTodosVideosAsync()
     {
-        return await _ispmediacontext.Videos.
+        var video = await _ispmediacontext.Videos.
             Include(X => X.Autor.Produtora).
             Include(X => X.Autor.Banda).
             Include(X => X.Participacoes).ToListAsync();
+
+        var dto = video.Adapt<List<VideoGetDTO>>();
+        return dto;
     }
 
-    public async Task<Video?> ListarVideoPorIdAsync(Guid id)
+    public async Task<VideoGetDTO> ListarVideoPorIdAsync(Guid id)
     {
-        return await _ispmediacontext.Videos.
+        var video = await _ispmediacontext.Videos.
             Include(X => X.Autor.Produtora).
             Include(X => X.Autor.Banda).
             Include(X => X.Participacoes)
             .AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
+
+        var dto = video.Adapt<VideoGetDTO>();
+        return dto;
     }
 
     public async Task<bool> EliminarVideoAsync(Guid id)
@@ -111,6 +123,16 @@ public class VideoService
 
         if (video == null)
             return false;
+
+        if (!string.IsNullOrEmpty(video.CaminhoMedia))
+        {
+            string fullPath = video.CaminhoMedia.Replace('/', Path.DirectorySeparatorChar);
+
+            if (File.Exists(fullPath))
+            {
+                File.Delete(fullPath);
+            }
+        }
 
         _ispmediacontext.Videos.Remove(video);
         await _ispmediacontext.SaveChangesAsync();

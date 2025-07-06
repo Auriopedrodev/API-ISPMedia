@@ -20,3 +20,4 @@ global using ISPMediaAPI.DTOs.Autor;
 global using ISPMediaAPI.DTOs.Participacao;
 global using ISPMediaAPI.DTOs.Produtora;
 global using ISPMediaAPI.DTOs.Banda;
+global using ISPMediaAPI.DTOs.Musica;
