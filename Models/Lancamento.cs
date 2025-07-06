@@ -1,19 +1,31 @@
 ﻿using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Runtime.InteropServices;
+using System.ComponentModel.DataAnnotations;
 
 namespace ISPMediaAPI.Models;
 
 public class Lancamento
 {
-    private Guid Id;
+    [Key]
+    public Guid Id { get; set; } = Guid.NewGuid();
 
-    private string Titulo;
+    [Required]
+    [StringLength(255)]
+    public string Titulo { get; set; }
 
-    private string fichaTecnica;
+    [StringLength(2000)]
+    public string FichaTecnica { get; set; }
       
-    private DateOnly dataLancamento;
+    [Required]
+    public DateOnly DataLancamento { get; set; }
 
-    private string tipoLancamento;
+    [Required]
+    [StringLength(50)]
+    public string TipoLancamento { get; set; }
 
-    private string Capa;
+    [StringLength(500)]
+    public string Capa { get; set; }
+    
+    // Relacionamento one-to-many com Musica
+    public virtual ICollection<Musica> Musicas { get; set; } = new List<Musica>();
 }

@@ -1,13 +1,8 @@
-﻿using ISPMediaAPI.DTOs.Banda;
-using ISPMediaAPI.DTOs.Produtora;
-using ISPMediaAPI.DTOs.ProdutoraDTO;
+﻿namespace ISPMediaAPI.DTOs.Autor;
 
-namespace ISPMediaAPI.DTOs.Autor
+public class AutorGetDTO : ArtistaGetDTO
 {
-    public class AutorGetDTO:ArtistaGetDTO
-    {
-        public Guid Id { get; set; } 
-        public ProdutoraGetDTO Produtora { get; set; }
-        public ProdutoraGetDTO Banda { get; set; }
-    }
+    public Guid Id { get; set; }
+    public ProdutoraGetDTO Produtora { get; set; }
+    public BandaGetDTO Banda { get; set; }
 }

@@ -12,5 +12,5 @@ public class MediaAddDTO
 
     public AutorAddDTO Autor { get; set; }
 
-    public List<ParticipacaoAddDTO> Participacoes { get; set; } = new List<ParticipacaoAddDTO>();
+    public List<ParticipacaoAddDTO> Participacoes { get; set; }
 }

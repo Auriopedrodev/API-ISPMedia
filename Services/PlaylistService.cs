@@ -27,7 +27,7 @@ public class PlaylistService
         var novaPlaylist = new Playlist
         {
             Nome = dtoplaylist.Nome,
-            listaMedia = medias
+            Medias = medias
         };
 
         _ispmediacontext.Playlists.Add(novaPlaylist);
@@ -40,7 +40,7 @@ public class PlaylistService
     
     public async Task<List<PlaylistGetDTO>> ListarTodaPlaylistAsync()    {
         var musica = await _ispmediacontext.
-            Playlists.Include(x => x.listaMedia).ToListAsync();
+            Playlists.Include(x => x.Medias).ToListAsync();
         var dto = musica.Adapt<List<PlaylistGetDTO>>();
         return dto;
     }

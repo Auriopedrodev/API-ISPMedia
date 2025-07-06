@@ -1,8 +1,4 @@
-﻿using ISPMediaAPI.DTOs.Genero;
-using ISPMediaAPI.DTOs.Musica;
-using ISPMediaAPI.Services;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using ISPMediaAPI.DTOs.Musica;
 
 namespace ISPMediaAPI.Controllers;
 
@@ -28,7 +24,6 @@ public class MusicaController : ControllerBase
         return Ok(listaMusica);
     }
 
-
     [HttpGet("{id:guid}")]
     [SwaggerOperation(
         Summary = "Listar musica por ID",
@@ -44,16 +39,25 @@ public class MusicaController : ControllerBase
 
     [HttpPost]
     [SwaggerOperation(
-    Summary = "Criar um nova musica",
-    Description = "Regista um novo utilizador na aplicação com os dados fornecidos."
+    Summary = "Criar uma nova musica",
+    Description = "Regista uma nova musica na aplicação. Compositores e participações devem ser separados por vírgula."
     )]
-    public async Task<IActionResult> Criar([FromForm] MusicaAddDTO dto, IFormFile media)
+    public async Task<IActionResult> Criar([FromForm] MusicaAddFormDto musicaDto,
+                                         IFormFile media)
     {
-        var novaMusica = await _musicaService.CriarMusicaAsync(dto, media);
-        if (novaMusica == null)
-            return BadRequest(new { mensagem = "E-mail ou username já em uso." });
+        try
+        {
+            var novaMusica = await _musicaService.CriarMusicaComFormDataAsync(musicaDto, media);
 
-        return Ok (novaMusica);
+            if (novaMusica == null)
+                return BadRequest(new { mensagem = "Erro ao criar música." });
+
+            return Ok(novaMusica);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { mensagem = $"Erro ao processar dados: {ex.Message}" });
+        }
     }
 
     [HttpPut("{id:guid}")]
@@ -61,7 +65,7 @@ public class MusicaController : ControllerBase
         Summary = "Atualizar musica",
         Description = "Atualiza os dados de uma musica existente pelo seu ID."
     )]
-    public async Task<IActionResult> Atualizar(Guid id, MusicaAddDTO dtomusica, IFormFile? media)
+    public async Task<IActionResult> Atualizar(Guid id, [FromBody] MusicaAddDTO dtomusica, IFormFile? media)
     {
         var atualizado = await _musicaService.ActualizarMusicaAsync(id, dtomusica, media);
         if (!atualizado)
@@ -81,5 +85,4 @@ public class MusicaController : ControllerBase
             return NotFound(new { mensagem = "Musica não encontrada." });
         return NoContent();
     }
-
 }

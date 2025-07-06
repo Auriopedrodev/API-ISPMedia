@@ -1,11 +1,4 @@
-﻿using ISPMediaAPI.DTOs.Autor;
-using ISPMediaAPI.DTOs.AutorDTO;
-using ISPMediaAPI.DTOs.CompositorDTO;
-using ISPMediaAPI.DTOs.Genero;
-using ISPMediaAPI.DTOs.Participacao;
-using ISPMediaAPI.DTOs.ParticipacaoDTO;
-
-namespace ISPMediaAPI.DTOs.Media;
+﻿namespace ISPMediaAPI.DTOs.Media;
 
 public class MediaGetDTO
 {
@@ -17,5 +10,5 @@ public class MediaGetDTO
 
     public AutorGetDTO Autor { get; set; }
 
-    public List<ParticipacaoGetDTO> Participacoes { get; set; } = new List<ParticipacaoGetDTO>();
+    public List<ParticipacaoGetDTO> Participacoes { get; set; }
 }

@@ -10,12 +10,12 @@ builder.Services.AddSwaggerGen(c =>
     c.EnableAnnotations();
 });
 
-//Configuração da string de conexão
+//ConfiguraÃ§Ã£o da string de conexÃ£o
 string SqlConnection = builder.Configuration.GetConnectionString("connection");
 builder.Services.AddDbContext<ISPMediaDbContext>(options =>
     options.UseSqlServer((SqlConnection)));
 
-//Injecção de dependência
+//InjecÃ§Ã£o de dependÃªncia
 builder.Services.AddScoped<UtilizadorService>();
 builder.Services.AddScoped<ArtistaService>();
 builder.Services.AddScoped<BandaService>();
@@ -29,6 +29,10 @@ builder.Services.AddScoped<PlaylistService>();
 //builder.Services.AddScoped<ParticipacaoService>();
 builder.Services.AddScoped<ProdutoraService>();
 
+// ConfiguraÃ§Ã£o do Mapster
+TypeAdapterConfig.GlobalSettings.Default
+    .PreserveReference(true)
+    .MaxDepth(10);
 
 var app = builder.Build();
 

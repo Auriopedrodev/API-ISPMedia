@@ -11,5 +11,5 @@ public class MusicaAddDTO: MediaAddDTO
     [Required]
     public GeneroAddDTO? TipoGenero { get; set; }
 
-    public List<CompositorAddDTO> Compositores { get; set; } = new List<CompositorAddDTO>();
+    public List<CompositorAddDTO> Compositores { get; set; }
 }

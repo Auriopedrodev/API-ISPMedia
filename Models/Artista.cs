@@ -5,6 +5,6 @@ public class Artista
     [Key]
     public Guid Id { get; set; } = Guid.NewGuid();
     [Required]
-    public string Nome { get; set; }
-  
+    [StringLength(255)]
+    public string Nome { get; set; } = string.Empty;
 }

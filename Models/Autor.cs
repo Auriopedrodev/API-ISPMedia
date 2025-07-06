@@ -9,6 +9,4 @@ public class Autor: Artista
     public Guid BandaId { get; set; }
     [ForeignKey(nameof(BandaId))]
     public Banda Banda { get; set; }
-    
-
 }

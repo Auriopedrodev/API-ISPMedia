@@ -8,6 +8,6 @@ public class AutorAddDTO: ArtistaAddDTO
 {
 
     public ProdutoraAddDTO Produtora { get; set; }
-    public ProdutoraAddDTO Banda { get; set; }
+    public BandaAddDTO Banda { get; set; }
 
 }
