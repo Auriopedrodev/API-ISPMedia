@@ -16,6 +16,9 @@ public class Media
     public string TipoMedia { get; set; }
     public Autor Autor { get; set; }
 
+    // Relacionamento many-to-many com Participacao
+    //public virtual ICollection<Participacao> Participacoes { get; set; } = new List<Participacao>();
+
     public List<Participacao> Participacoes { get; set; } = new List<Participacao>();
 
 }

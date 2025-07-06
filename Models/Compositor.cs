@@ -1,6 +1,8 @@
-﻿namespace ISPMediaAPI.Models
+﻿namespace ISPMediaAPI.Models;
+
+public class Compositor: Artista
 {
-    public class Compositor: Artista
-    {
-    }
+    // Relacionamento many-to-many com Musica
+    //public virtual ICollection<Musica> Musica { get; set; } 
+
 }

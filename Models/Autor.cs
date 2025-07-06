@@ -11,11 +11,4 @@ public class Autor: Artista
     public Banda Banda { get; set; }
     
 
-
-    /*
-      public int CategoriaId { get; set; }
-        [ForeignKey(nameof(CategoriaId))]
-        public Categoria Categoria { get; set; }
-     
-     */
 }

@@ -2,9 +2,11 @@
 
 public class Playlist
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
 
+    [Required]
     public string Nome { get; set; }
 
-    public string Estado { get; set; }
+    public List<Media> listaMedia = new List<Media>();
+
 }

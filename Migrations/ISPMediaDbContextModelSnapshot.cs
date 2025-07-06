@@ -24,65 +24,14 @@ namespace ISPMediaAPI.Migrations
 
             modelBuilder.Entity("ISPMediaAPI.Models.Album", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Artista")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("CaminhoImagemCapa")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DataLancamento")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Editora")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<bool>("EstaPublico")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Genero")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("IdUtilizador")
-                        .HasColumnType("int");
-
-                    b.Property<decimal?>("Preco")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Produtor")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Titulo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UtilizadorId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.Property<int>("Classificacao")
+                        .HasColumnType("int");
 
-                    b.HasIndex("UtilizadorId");
+                    b.HasKey("Id");
 
                     b.ToTable("Albums");
                 });
@@ -194,6 +143,21 @@ namespace ISPMediaAPI.Migrations
                     b.UseTphMappingStrategy();
                 });
 
+            modelBuilder.Entity("ISPMediaAPI.Models.Playlist", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Playlists");
+                });
+
             modelBuilder.Entity("ISPMediaAPI.Models.Produtora", b =>
                 {
                     b.Property<Guid>("Id")
@@ -291,11 +255,16 @@ namespace ISPMediaAPI.Migrations
                 {
                     b.HasBaseType("ISPMediaAPI.Models.Media");
 
+                    b.Property<Guid?>("AlbumId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Letra")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("TipoGeneroId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.HasIndex("AlbumId");
 
                     b.HasIndex("TipoGeneroId");
 
@@ -307,17 +276,6 @@ namespace ISPMediaAPI.Migrations
                     b.HasBaseType("ISPMediaAPI.Models.Media");
 
                     b.HasDiscriminator().HasValue("Video");
-                });
-
-            modelBuilder.Entity("ISPMediaAPI.Models.Album", b =>
-                {
-                    b.HasOne("ISPMediaAPI.Models.Utilizador", "Utilizador")
-                        .WithMany()
-                        .HasForeignKey("UtilizadorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Utilizador");
                 });
 
             modelBuilder.Entity("ISPMediaAPI.Models.Media", b =>
@@ -366,6 +324,10 @@ namespace ISPMediaAPI.Migrations
 
             modelBuilder.Entity("ISPMediaAPI.Models.Musica", b =>
                 {
+                    b.HasOne("ISPMediaAPI.Models.Album", null)
+                        .WithMany("Musicas")
+                        .HasForeignKey("AlbumId");
+
                     b.HasOne("ISPMediaAPI.Models.Genero", "TipoGenero")
                         .WithMany()
                         .HasForeignKey("TipoGeneroId")
@@ -373,6 +335,11 @@ namespace ISPMediaAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("TipoGenero");
+                });
+
+            modelBuilder.Entity("ISPMediaAPI.Models.Album", b =>
+                {
+                    b.Navigation("Musicas");
                 });
 
             modelBuilder.Entity("ISPMediaAPI.Models.Media", b =>

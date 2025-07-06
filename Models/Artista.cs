@@ -7,6 +7,4 @@ public class Artista
     [Required]
     public string Nome { get; set; }
   
-    
-   
 }

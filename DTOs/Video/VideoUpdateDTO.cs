@@ -6,5 +6,5 @@ namespace ISPMediaAPI.DTOs.Video;
 
 public class VideoUpdateDTO: MediaUpdateDTO 
 {
-    public string? Descricao { get; set; }
+
 }

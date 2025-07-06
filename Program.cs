@@ -21,6 +21,8 @@ builder.Services.AddScoped<ArtistaService>();
 builder.Services.AddScoped<BandaService>();
 //builder.Services.AddScoped<AlbumService>();
 builder.Services.AddScoped<MusicaService>();
+builder.Services.AddScoped<VideoService>();
+builder.Services.AddScoped<PlaylistService>();
 //builder.Services.AddScoped<GeneroService>();  
 //builder.Services.AddScoped<PlaylistService>();
 //builder.Services.AddScoped<CompositorService>();

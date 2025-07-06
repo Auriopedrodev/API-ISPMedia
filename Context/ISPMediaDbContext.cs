@@ -16,6 +16,7 @@ public class ISPMediaDbContext : DbContext
     public DbSet<Media> Medias { get; set; }
     public DbSet<Musica> Musicas { get; set; }
     public DbSet<Participacao> Participacoes { get; set; }
+    public DbSet<Playlist> Playlists { get; set; }
     public DbSet<Produtora> Produtoras { get; set; }
     public DbSet<Utilizador> Utilizadores { get; set; }
     public DbSet<Video> Videos { get; set; }

@@ -10,5 +10,8 @@ public class Musica : Media
     [ForeignKey(nameof(TipoGeneroId))]
 
     public List<Compositor> Compositores { get; set; } = new List<Compositor>();
+   
+    // Relacionamento many-to-many com Compositor
+    // public virtual ICollection<Compositor> Compositores { get; set; } = new List<Compositor>();
 
 }

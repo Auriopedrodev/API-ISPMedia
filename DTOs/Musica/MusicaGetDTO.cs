@@ -1,4 +1,5 @@
-﻿using ISPMediaAPI.DTOs.CompositorDTO;
+﻿using ISPMediaAPI.DTOs.Compositor;
+using ISPMediaAPI.DTOs.CompositorDTO;
 using ISPMediaAPI.DTOs.Genero;
 using ISPMediaAPI.DTOs.Media;
 
@@ -9,8 +10,7 @@ public class MusicaGetDTO : MediaGetDTO
     public Guid Id { get; set; }
     public string? Letra { get; set; }
 
-    [Required]
-    public GeneroAddDTO? TipoGenero { get; set; }
+    public GeneroGetDTO? TipoGenero { get; set; }
 
-    public List<CompositorAddDTO> Compositores { get; set; } = new List<CompositorAddDTO>();
+    public List<CompositorGetDTO> Compositores { get; set; } = new List<CompositorGetDTO>();
 }
