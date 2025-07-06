@@ -15,12 +15,15 @@ public class PlaylistService
     public async Task<PlaylistAddDTO> CriarPlaylistAsync(PlaylistAddDTO dtoplaylist)
     {
         var medias = new List<Media>();
+
         foreach (var mediaId in dtoplaylist.listaMedia)
         {
-            var novaMedia = await _ispmediacontext.Medias.AsNoTracking().FirstOrDefaultAsync(a => a.Id == Guid.Parse(mediaId));
-            if (novaMedia != null)
+            var mediaExistente = await _ispmediacontext.Medias
+                .FirstOrDefaultAsync(a => a.Id == Guid.Parse(mediaId));
+
+            if (mediaExistente != null)
             {
-                medias.Add(novaMedia);
+                medias.Add(mediaExistente);
             }
         }
 
@@ -30,18 +33,31 @@ public class PlaylistService
             Medias = medias
         };
 
+        // Evita tentativa de re-inserção de Medias
+        foreach (var media in medias)
+        {
+            _ispmediacontext.Attach(media);
+        }
+
         _ispmediacontext.Playlists.Add(novaPlaylist);
         await _ispmediacontext.SaveChangesAsync();
+
         var dto = novaPlaylist.Adapt<PlaylistAddDTO>();
         return dto;
-
     }
 
-    
-    public async Task<List<PlaylistGetDTO>> ListarTodaPlaylistAsync()    {
-        var musica = await _ispmediacontext.
-            Playlists.Include(x => x.Medias).ToListAsync();
-        var dto = musica.Adapt<List<PlaylistGetDTO>>();
+
+
+    public async Task<List<PlaylistGetDTO>> ListarTodaPlaylistAsync()    
+    {
+        var playlists = await _ispmediacontext.Playlists
+            .Include(x => x.Medias)
+                .ThenInclude(x => x.Autor)
+            .Include(x => x.Medias)
+                .ThenInclude(x => x.Participacoes)
+            .ToListAsync();
+
+        var dto = playlists.Adapt<List<PlaylistGetDTO>>();
         return dto;
     }
 }

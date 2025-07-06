@@ -34,6 +34,10 @@ TypeAdapterConfig.GlobalSettings.Default
     .PreserveReference(true)
     .MaxDepth(10);
 
+// Configurações específicas de mapeamento
+TypeAdapterConfig<Playlist, PlaylistGetDTO>.NewConfig()
+    .Map(dest => dest.listaMedia, src => src.Medias);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

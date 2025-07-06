@@ -1,4 +1,5 @@
 ﻿using ISPMediaAPI.Context;
+using ISPMediaAPI.DTOs.Lancamento;
 using ISPMediaAPI.DTOs.Musica;
 using ISPMediaAPI.Models;
 using Microsoft.Identity.Client;
@@ -154,6 +155,18 @@ public class MusicaService
             caminhoCompleto = caminhoCompleto.Replace("\\", "/"); // Normalizar o caminho para URL            
         }
 
+        // Verificar se já existe o lançamento
+        var lancamentoExistente = await _ispmediacontext.Lancamentos.FirstOrDefaultAsync(l => l.Titulo == musicaDto.Lancamento.Titulo);
+        var lancamentoNovo = lancamentoExistente ??
+            (await _ispmediacontext.Lancamentos.AddAsync(new Lancamento
+            {
+                Titulo = musicaDto.Lancamento.Titulo,
+                FichaTecnica = musicaDto.Lancamento.FichaTecnica,
+                DataLancamento = musicaDto.Lancamento.DataLancamento,
+                TipoLancamento = musicaDto.Lancamento.TipoLancamento,
+                Capa = caminhoCompleto
+            })).Entity;
+
         // CRIAR A MÚSICA
         var novaMusica = new Musica
         {
@@ -165,6 +178,7 @@ public class MusicaService
             Letra = musicaDto.Letra,
             TipoGenero = generoNovo,
             Autor = autorNovo,
+            LancamentoId = lancamentoNovo.Id,
             Compositores = new List<Compositor>(),
             Participacoes = new List<Participacao>()
         };

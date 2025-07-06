@@ -4,7 +4,6 @@ public class MediaGetDTO
 {
     public Guid Id { get; set; }
 
-    [Required]
     public string Titulo { get; set; }
     public string Descricao { get; set; }
 

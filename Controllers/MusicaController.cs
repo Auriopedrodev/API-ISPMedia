@@ -1,4 +1,6 @@
-﻿namespace ISPMediaAPI.Controllers;
+﻿using ISPMediaAPI.DTOs.Lancamento;
+
+namespace ISPMediaAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -40,8 +42,9 @@ public class MusicaController : ControllerBase
     Summary = "Criar uma nova musica",
     Description = "Regista uma nova musica na aplicação. Compositores e participações devem ser separados por vírgula."
     )]
-    public async Task<IActionResult> Criar([FromForm] MusicaAddFormDto musicaDto,
-                                         IFormFile media)
+    public async Task<IActionResult> Criar(
+        [FromForm] MusicaAddFormDto musicaDto,
+        IFormFile media)
     {
         try
         {

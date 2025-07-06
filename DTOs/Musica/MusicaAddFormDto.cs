@@ -1,4 +1,6 @@
-﻿namespace ISPMediaAPI.DTOs.Musica;
+﻿using ISPMediaAPI.DTOs.Lancamento;
+
+namespace ISPMediaAPI.DTOs.Musica;
 
 public class MusicaAddFormDto
 {
@@ -11,4 +13,5 @@ public class MusicaAddFormDto
     public string BandaNome { get; set; } = string.Empty;
     public string? Compositores { get; set; }
     public string? Participacoes { get; set; }
+    public LancamentoAddDTO Lancamento { get; set; }
 }

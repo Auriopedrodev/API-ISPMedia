@@ -1,16 +1,12 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace ISPMediaAPI.DTOs.Lancamento;
+﻿namespace ISPMediaAPI.DTOs.Lancamento;
 
 public class LancamentoAddDTO
 {
-    public string Titulo;
+    public string Titulo { get; set; }
 
-    public string fichaTecnica;
+    public string FichaTecnica { get; set; }
 
-    public DateOnly dataLancamento;
+    public DateOnly DataLancamento { get; set; }
 
-    public string tipoLancamento;
-
-    public string Capa;
+    public string TipoLancamento { get; set; }
 }

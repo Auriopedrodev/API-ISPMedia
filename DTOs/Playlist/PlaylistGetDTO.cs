@@ -9,5 +9,4 @@ public class PlaylistGetDTO
     public string Nome { get; set; }
 
     public List<MediaGetDTO> listaMedia { get; set; }
-
 }

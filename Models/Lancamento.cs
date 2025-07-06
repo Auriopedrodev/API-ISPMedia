@@ -11,21 +11,21 @@ public class Lancamento
 
     [Required]
     [StringLength(255)]
-    public string Titulo { get; set; }
+    public string Titulo { get; set; } = string.Empty;
 
     [StringLength(2000)]
-    public string FichaTecnica { get; set; }
-      
+    public string FichaTecnica { get; set; } = string.Empty;
+
     [Required]
     public DateOnly DataLancamento { get; set; }
 
     [Required]
     [StringLength(50)]
-    public string TipoLancamento { get; set; }
+    public string TipoLancamento { get; set; } = string.Empty; // Ex: "Álbum", "EP", "Single"
 
     [StringLength(500)]
-    public string Capa { get; set; }
-    
+    public string Capa { get; set; } = string.Empty; // Caminho para a imagem da capa do lançamento
+
     // Relacionamento one-to-many com Musica
     public virtual ICollection<Musica> Musicas { get; set; } = new List<Musica>();
 }
